@@ -8,12 +8,14 @@
     <bean id="jcrConnectionManager" class="org.jencks.factory.ConnectionManagerFactoryBean">
         <property name="transactionManager" ref="transactionManager" />
         <property name="transaction" value="xa" />
+        <property name="poolMinSize" value="1" />
+        <property name="poolMaxSize" value="5" />
+        <property name="connectionMaxIdleMinutes" value="5" />
     </bean>
 
     <bean id="jcrManagedConnectionFactory"
         class="org.apache.jackrabbit.jca.JCAManagedConnectionFactory">
-        <property name="configFile"
-            value="/home/kops/projects/jcr-transaction-sample/src/main/resources/repository.xml" />
+        <property name="configFile" value="classpath:repository.xml" />
         <property name="homeDir" value="${repository.dir}" />
     </bean>
 
