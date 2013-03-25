@@ -22,7 +22,6 @@ import fr.dudie.jcr.transactions.listener.AbstractTestListener;
 import fr.dudie.jcr.transactions.listener.FailureListener;
 import fr.dudie.jcr.transactions.service.RepositoryService;
 
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:/applicationContext.xml", "classpath:/applicationContext-test.xml" })
 public class JackrabbitTransactionSampleTest {
@@ -43,7 +42,7 @@ public class JackrabbitTransactionSampleTest {
             observationManager.addEventListener(failureListener, Event.NODE_ADDED, "/", true, null, null, false);
         }
     }
-    
+
     @After
     public void disableListeners() {
         failureListener.setEnabled(false);

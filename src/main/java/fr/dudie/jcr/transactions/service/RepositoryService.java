@@ -2,6 +2,7 @@ package fr.dudie.jcr.transactions.service;
 
 import javax.jcr.LoginException;
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
@@ -15,8 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class RepositoryService {
 
     @Autowired
-    private Repository repository; 
-    
+    private Repository repository;
+
     @Transactional
     public void createElement(final String name) throws LoginException, RepositoryException {
         final Session session = repository.login(new SimpleCredentials("admin", "admin".toCharArray()));
@@ -26,6 +27,10 @@ public class RepositoryService {
 
     public Node getElement(String name) throws LoginException, RepositoryException {
         final Session session = repository.login();
-        return session.getRootNode().getNode(name);
+        try {
+            return session.getRootNode().getNode(name);
+        } catch (PathNotFoundException pnf) {
+            return null;
+        }
     }
 }
