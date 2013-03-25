@@ -3,15 +3,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <bean id="transactionManager" class="org.jencks.factory.TransactionManagerFactoryBean" />
-
-    <bean id="jcrConnectionManager" class="org.jencks.factory.ConnectionManagerFactoryBean">
-        <property name="transactionManager" ref="transactionManager" />
-        <property name="transaction" value="xa" />
-        <property name="poolMinSize" value="1" />
-        <property name="poolMaxSize" value="5" />
-        <property name="connectionMaxIdleMinutes" value="5" />
-        <property name="partitionStrategy" value="by-connector-properties" />
+    <bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
+        <property name="jndiName" value="java:comp/UserTransaction"/>
     </bean>
 
     <bean id="jcrManagedConnectionFactory"
