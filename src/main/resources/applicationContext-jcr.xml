@@ -11,6 +11,7 @@
         <property name="poolMinSize" value="1" />
         <property name="poolMaxSize" value="5" />
         <property name="connectionMaxIdleMinutes" value="5" />
+        <property name="partitionStrategy" value="by-connector-properties" />
     </bean>
 
     <bean id="jcrManagedConnectionFactory"
