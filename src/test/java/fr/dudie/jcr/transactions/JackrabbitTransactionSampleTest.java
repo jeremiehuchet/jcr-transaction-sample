@@ -1,5 +1,6 @@
 package fr.dudie.jcr.transactions;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -41,6 +42,10 @@ public class JackrabbitTransactionSampleTest {
             failureListener = new FailureListener();
             observationManager.addEventListener(failureListener, Event.NODE_ADDED, "/", true, null, null, false);
         }
+
+        repoService.deleteElement("listener-failure");
+        repoService.deleteElement("failure");
+        repoService.deleteElement("success");
     }
 
     @After
@@ -49,16 +54,27 @@ public class JackrabbitTransactionSampleTest {
     }
 
     @Test
-    public void failureCausesRollback() throws LoginException, RepositoryException {
+    public void listenerFailureCausesRollback() throws LoginException, RepositoryException {
         failureListener.setEnabled(true);
-        repoService.createElement("failure");
+        repoService.createElement("listener-failure");
+        assertNull(repoService.getElement("listener-failure"));
+    }
+
+    @Test
+    public void failureCausesRollback() throws LoginException, RepositoryException {
+        failureListener.setEnabled(false);
+        try {
+            repoService.createElement("failure");
+        } catch (RuntimeException re) {
+            assertEquals("failure", re.getMessage());
+        }
         assertNull(repoService.getElement("failure"));
     }
 
     @Test
     public void noFailureCausesCommit() throws LoginException, RepositoryException {
         failureListener.setEnabled(false);
-        repoService.createElement("failure");
-        assertNotNull(repoService.getElement("failure"));
+        repoService.createElement("success");
+        assertNotNull(repoService.getElement("success"));
     }
 }

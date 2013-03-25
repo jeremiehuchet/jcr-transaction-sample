@@ -25,12 +25,29 @@ public class RepositoryService {
         session.save();
     }
 
+    @Transactional
+    public void createElementAndThrowRuntimeException(final String name) throws LoginException, RepositoryException {
+        final Session session = repository.login(new SimpleCredentials("admin", "admin".toCharArray()));
+        session.getRootNode().addNode(name);
+        session.save();
+        throw new RuntimeException(name);
+    }
+
     public Node getElement(String name) throws LoginException, RepositoryException {
         final Session session = repository.login();
         try {
             return session.getRootNode().getNode(name);
         } catch (PathNotFoundException pnf) {
             return null;
+        }
+    }
+
+    public void deleteElement(final String name) throws LoginException, RepositoryException {
+        final Session session = repository.login(new SimpleCredentials("admin", "admin".toCharArray()));
+        try {
+            session.getRootNode().getNode(name).remove();
+            session.save();
+        } catch (PathNotFoundException pnf) {
         }
     }
 }
