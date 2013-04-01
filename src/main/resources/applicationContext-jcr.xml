@@ -9,7 +9,7 @@
         <property name="transactionManager" ref="transactionManager" />
         <property name="transaction" value="xa" />
         <property name="poolMinSize" value="1" />
-        <property name="poolMaxSize" value="5" />
+        <property name="poolMaxSize" value="50" />
         <property name="connectionMaxIdleMinutes" value="5" />
         <property name="partitionStrategy" value="by-connector-properties" />
     </bean>
